@@ -176,14 +176,17 @@ namespace Rock.Logging
             }
             catch (Exception ex)
             {
-                // TODO: Invoke retry mechanism.
+                if (LibraryLogger.IsEnabled)
+                {
+                    LibraryLogger.Log(
+                        ex,
+                        string.Format(
+                            "Caught exception while writing to {0} with blockUntilComplete = true.",
+                            logProvider.GetType()),
+                        "Rock.Logging");
+                }
 
-                LibraryLogger.Log(
-                    ex,
-                    string.Format(
-                        "Caught exception while writing to {0} with blockUntilComplete = true.",
-                        logProvider.GetType()),
-                    "Rock.Logging");
+                // TODO: Invoke retry mechanism.
             }
         }
 
@@ -196,14 +199,17 @@ namespace Rock.Logging
             }
             catch (Exception ex)
             {
-                // TODO: Invoke retry mechanism.
+                if (LibraryLogger.IsEnabled)
+                {
+                    LibraryLogger.Log(
+                        ex,
+                        string.Format(
+                            "Caught exception in initial synchronous section while writing to {0} with blockUntilComplete = false.",
+                            logProvider.GetType()),
+                        "Rock.Logging");
+                }
 
-                LibraryLogger.Log(
-                    ex,
-                    string.Format(
-                        "Caught exception in initial synchronous section while writing to {0} with blockUntilComplete = false.",
-                        logProvider.GetType()),
-                    "Rock.Logging");
+                // TODO: Invoke retry mechanism.
 
                 task = null;
                 return false;
@@ -264,14 +270,17 @@ namespace Rock.Logging
                     }
                     catch (Exception ex)
                     {
-                        // TODO: Invoke retry mechanism.
+                        if (LibraryLogger.IsEnabled)
+                        {
+                            LibraryLogger.Log(
+                                ex,
+                                string.Format(
+                                    "Caught exception in asynchronous section while writing to {0} with blockUntilComplete = false.",
+                                    workItem.LogProvider.GetType()),
+                                "Rock.Logging");
+                        }
 
-                        LibraryLogger.Log(
-                            ex,
-                            string.Format(
-                                "Caught exception in asynchronous section while writing to {0} with blockUntilComplete = false.",
-                                workItem.LogProvider.GetType()),
-                            "Rock.Logging");
+                        // TODO: Invoke retry mechanism.
                     }
                 }
             }
