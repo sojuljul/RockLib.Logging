@@ -26,6 +26,7 @@ namespace Rock.Logging
         private readonly IThrottlingRuleEvaluator _throttlingRuleEvaluator;
         private readonly IEnumerable<IContextProvider> _contextProviders;
 
+        private readonly object _disposeLocker = new object();
         private bool _isDisposed;
 
         public Logger(
@@ -144,7 +145,7 @@ namespace Rock.Logging
         {
             if (!_isDisposed)
             {
-                lock (this)
+                lock (_disposeLocker)
                 {
                     if (!_isDisposed)
                     {
