@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Rock.Logging.Library;
 using Rock.Threading;
 
 namespace Rock.Logging
@@ -175,7 +176,14 @@ namespace Rock.Logging
             }
             catch (Exception ex)
             {
-                // TODO: "Library-level" error handling (include log provider and log entry)
+                // TODO: Invoke retry mechanism.
+
+                LibraryLogger.Log(
+                    ex,
+                    string.Format(
+                        "Caught exception while writing to {0} with blockUntilComplete = true.",
+                        logProvider.GetType()),
+                    "Rock.Logging");
             }
         }
 
@@ -188,7 +196,15 @@ namespace Rock.Logging
             }
             catch (Exception ex)
             {
-                // TODO: "Library-level" error handling (include log provider and log entry)
+                // TODO: Invoke retry mechanism.
+
+                LibraryLogger.Log(
+                    ex,
+                    string.Format(
+                        "Caught exception in initial synchronous section while writing to {0} with blockUntilComplete = false.",
+                        logProvider.GetType()),
+                    "Rock.Logging");
+
                 task = null;
                 return false;
             }
@@ -248,7 +264,14 @@ namespace Rock.Logging
                     }
                     catch (Exception ex)
                     {
-                        // TODO: "Library-level" error handling (include log provider and log entry)
+                        // TODO: Invoke retry mechanism.
+
+                        LibraryLogger.Log(
+                            ex,
+                            string.Format(
+                                "Caught exception in asynchronous section while writing to {0} with blockUntilComplete = false.",
+                                workItem.LogProvider.GetType()),
+                            "Rock.Logging");
                     }
                 }
             }
