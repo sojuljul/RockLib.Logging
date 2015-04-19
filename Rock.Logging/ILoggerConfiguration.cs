@@ -4,5 +4,7 @@ namespace Rock.Logging
     {
         bool IsLoggingEnabled { get; }
         LogLevel LoggingLevel { get; }
+        int ConcurrencyLevel { get; }
+        bool BlockUntilComplete { get; }
     }
 }

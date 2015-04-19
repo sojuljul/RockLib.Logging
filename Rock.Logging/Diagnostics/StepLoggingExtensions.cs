@@ -9,13 +9,14 @@ namespace Rock.Logging.Diagnostics
             this ILogger logger,
             LogLevel logLevel = LogLevel.Debug,
             string message = null,
+            bool? blockUntilComplete = null,
             [CallerMemberName] string callerMemberName = null,
             [CallerFilePath] string callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0)
         {
             return !logger.IsEnabled(logLevel)
                 ? NullStepLogger.Instance
-                : DefaultStepLoggerFactory.Current.CreateStepLogger(logger, logLevel, message, callerMemberName, callerFilePath, callerLineNumber);
+                : DefaultStepLoggerFactory.Current.CreateStepLogger(logger, logLevel, message, blockUntilComplete, callerMemberName, callerFilePath, callerLineNumber);
         }
 
         public static string LogValue(this string value, IStepLogger stepLogger, string label = "Value")

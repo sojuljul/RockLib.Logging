@@ -6,11 +6,12 @@
             ILogger logger,
             LogLevel logLevel,
             string message,
+            bool? blockUntilComplete,
             string callerMemberName,
             string callerFilePath,
             int callerLineNumber)
         {
-            return new StepLogger(logger, logLevel, message, callerMemberName, callerFilePath, callerLineNumber);
+            return new StepLogger(logger, logLevel, message, blockUntilComplete, callerMemberName, callerFilePath, callerLineNumber);
         }
     }
 }

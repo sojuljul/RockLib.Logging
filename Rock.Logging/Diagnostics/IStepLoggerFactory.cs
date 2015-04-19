@@ -8,6 +8,7 @@ namespace Rock.Logging.Diagnostics
             ILogger logger,
             LogLevel logLevel,
             string message,
+            bool? blockUntilComplete,
             string callerMemberName,
             string callerFilePath,
             int callerLineNumber);

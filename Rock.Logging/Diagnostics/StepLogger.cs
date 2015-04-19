@@ -10,6 +10,8 @@ namespace Rock.Logging.Diagnostics
         private readonly LogLevel _logLevel;
         private readonly string _message;
 
+        private readonly bool? _blockUntilComplete;
+
         private readonly string _callerMemberName;
         private readonly string _callerFilePath;
         private readonly int _callerLineNumber;
@@ -23,6 +25,7 @@ namespace Rock.Logging.Diagnostics
             ILogger logger,
             LogLevel logLevel,
             string message,
+            bool? blockUntilComplete,
             string callerMemberName,
             string callerFilePath,
             int callerLineNumber)
@@ -30,6 +33,8 @@ namespace Rock.Logging.Diagnostics
             _logger = logger;
             _logLevel = logLevel;
             _message = message;
+
+            _blockUntilComplete = blockUntilComplete;
 
             _callerMemberName = callerMemberName;
             _callerFilePath = callerFilePath;
@@ -74,7 +79,7 @@ namespace Rock.Logging.Diagnostics
             logEntry.ExtendedProperties.Add("StepReport", report.ToString());
 
             // ReSharper disable ExplicitCallerInfoArgument
-            _logger.LogAsync(logEntry, _callerMemberName, _callerFilePath, _callerLineNumber);
+            _logger.Log(logEntry, _blockUntilComplete, _callerMemberName, _callerFilePath, _callerLineNumber);
             // ReSharper restore ExplicitCallerInfoArgument
         }
     }

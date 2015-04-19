@@ -1,14 +1,15 @@
-﻿using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Rock.Logging
 {
-    public interface ILogger
+    public interface ILogger : IDisposable
     {
         bool IsEnabled(LogLevel logLevel);
         
-        Task LogAsync(
+        void Log(
             ILogEntry logEntry,
+            bool? blockUntilComplete = null,
             [CallerMemberName] string callerMemberName = null,
             [CallerFilePath] string callerFilePath = null,
             [CallerLineNumber] int callerLineNumber = 0);
