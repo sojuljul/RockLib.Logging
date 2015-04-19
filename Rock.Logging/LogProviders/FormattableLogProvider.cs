@@ -34,7 +34,7 @@ namespace Rock.Logging
 
         public async Task WriteAsync(ILogEntry entry)
         {
-            await WriteAsync(entry, _logFormatter.Format(entry));
+            await WriteAsync(entry, _logFormatter.Format(entry)).ConfigureAwait(false);
         }
 
         protected abstract Task WriteAsync(ILogEntry entry, string formattedLogEntry);
