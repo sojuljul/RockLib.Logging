@@ -147,6 +147,10 @@ namespace LoggerTests
                     .Setup(m => m.IsLoggingEnabled)
                     .Returns(configuredIsLoggingEnabled);
 
+                _mocker.GetMock<ILoggerConfiguration>()
+                    .Setup(m => m.ConcurrencyLevel)
+                    .Returns(3);
+
                 _mocker.GetMock<IEnumerable<IContextProvider>>()
                     .Setup(m => m.GetEnumerator())
                     .Returns(GetEmptyContextProviders());
