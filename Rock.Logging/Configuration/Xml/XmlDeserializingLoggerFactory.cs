@@ -70,9 +70,18 @@ namespace Rock.Logging.Configuration
         [XmlAttribute("loggingLevel")]
         public LogLevel LoggingLevel { get; set; }
 
+        /// <summary>
+        /// Gets or sets the concurrency level for loggers.
+        /// </summary>
+        /// <remarks>
+        /// The concurrency level is roughly equivelent to the number of background threads that process logs.
+        /// </remarks>
         [XmlAttribute("concurrencyLevel")]
         public int ConcurrencyLevel { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether logging methods should block until the log has finished writing.
+        /// </summary>
         [XmlAttribute("blockUntilComplete")]
         public bool BlockUntilComplete { get; set; }
 
