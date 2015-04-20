@@ -1,4 +1,5 @@
 using Rock.Logging.Diagnostics;
+using Rock.Logging.Library;
 using Rock.StaticDependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,46 @@ namespace Rock.Logging.Rock.StaticDependencyInjection
     {
         public override void Bootstrap()
         {
-            ImportMultiple<IContextProvider>(x => DefaultContextProviders.SetCurrent(x as IList<IContextProvider> ?? x.ToList()));
-            ImportFirst<ILogFormatter>(EmailLogProvider.SetDefaultLogFormatter, "EmailLogFormatter");
-            ImportFirst<ILogFormatter>(ConsoleLogProvider.SetDefaultLogFormatter, "ConsoleLogFormatter");
-            ImportFirst<ILogFormatter>(FileLogProvider.SetDefaultLogFormatter, "FileLogFormatter");
-            ImportFirst<ILogEntryFactory>(DefaultLogEntryFactory.SetCurrent);
-            ImportFirst<ILoggerFactory>(LoggerFactory.SetCurrent);
-            ImportFirst<IStepLoggerFactory>(DefaultStepLoggerFactory.SetCurrent);
-            ImportFirst<IXmlNamespaceProvider>(LogEntryExtendedProperties.SetXmlNamespace);
+            TryImportMultiple<IContextProvider>(x => DefaultContextProviders.SetCurrent(x as IList<IContextProvider> ?? x.ToList()));
+            TryImportFirst<ILogFormatter>(EmailLogProvider.SetDefaultLogFormatter, "EmailLogFormatter");
+            TryImportFirst<ILogFormatter>(ConsoleLogProvider.SetDefaultLogFormatter, "ConsoleLogFormatter");
+            TryImportFirst<ILogFormatter>(FileLogProvider.SetDefaultLogFormatter, "FileLogFormatter");
+            TryImportFirst<ILogEntryFactory>(DefaultLogEntryFactory.SetCurrent);
+            TryImportFirst<ILoggerFactory>(LoggerFactory.SetCurrent);
+            TryImportFirst<IStepLoggerFactory>(DefaultStepLoggerFactory.SetCurrent);
+            TryImportFirst<IXmlNamespaceProvider>(LogEntryExtendedProperties.SetXmlNamespace);
+        }
+
+        private void TryImportMultiple<TTargetType>(
+            Action<IEnumerable<TTargetType>> importAction,
+            string importName = null,
+            ImportOptions options = null)
+            where TTargetType : class
+        {
+            try
+            {
+                ImportMultiple(importAction, importName, options);
+            }
+            catch (Exception ex)
+            {
+                LibraryLogger.Log(ex, "Exception caught in static dependency injection.", "Rock.Logging");
+            }
+        }
+
+        private void TryImportFirst<TTargetType>(
+            Action<TTargetType> importAction,
+            string importName = null,
+            ImportOptions options = null)
+            where TTargetType : class
+        {
+            try
+            {
+                ImportFirst(importAction, importName, options);
+            }
+            catch (Exception ex)
+            {
+                LibraryLogger.Log(ex, "Exception caught in static dependency injection.", "Rock.Logging");
+            }
         }
 
         /// <summary>
